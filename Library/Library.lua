@@ -1,28 +1,4 @@
---[[
-  ================================================================
-  AirFlow UI Library  ·  Black & White Edition
-  ================================================================
-
-  Original by PookiePepelsss / Footagesus icons
-  Beautified + B&W theme applied
-
-  Features:
-  - Modern window + tabs + sidebar
-  - Toggle, Slider, Dropdown, Input, Keybind, ColorPicker
-  - Stepper, Progress, Button, Label, Paragraph, Section
-  - Config saving / loading
-  - Notifications + Confirm dialogs
-  - Lucide icons support
-  - Custom font loading
-  - Touch friendly
-
-  Usage:
-    local Airflow = loadstring(game:HttpGet("YOUR_PASTE_RAW_URL"))()
-    local Window = Airflow:CreateWindow({ Title = "My Hub", ... })
-
-  ================================================================
-]]
-
+-- modified airflow ui
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 local GuiService = game:GetService("GuiService")
@@ -123,7 +99,7 @@ Library.Theme = {
 Library.Assets = {
     Shadow = "rbxassetid://6014261993",
     Glow = "rbxassetid://8992230677",
-    Logo = "rbxassetid://103859712365480",
+    Logo = "rbxassetid://76507426303345",
 }
 
 local LUCIDE_URL = "https://raw.githubusercontent.com/Footagesus/Icons/refs/heads/main/lucide/dist/Icons.lua"
@@ -2570,7 +2546,7 @@ function Library.Window(_, opts)
         opts.Keybind = Enum.KeyCode[opts.Keybind]
     end
     local size = opts.Size or UDim2.fromOffset(640, 480)
-    local keybind = opts.Keybind or Enum.KeyCode.RightControl
+    local keybind = opts.Keybind or Enum.KeyCode.RightShift
 
     local self = setmetatable({
         Tabs = {},
@@ -4865,7 +4841,7 @@ Airflow:LoadFont({ Name = "ValleySans" }) -- downloads the font once into worksp
 local Window = Airflow:CreateWindow({
     Name = "Airflow",
     LoadingSubtitle = "Example",
-    ToggleUIKeybind = "RightControl", -- key that hides and shows the window
+    ToggleUIKeybind = "RightShift", -- key that hides and shows the window
     -- examples: "RightShift", "RightControl", "LeftAlt", "Insert", "Home", "F1", "Backquote"
     -- Enum.KeyCode values also work: ToggleUIKeybind = Enum.KeyCode.RightShift
     ConfigurationSaving = { Enabled = true, FolderName = "AirflowExample", FileName = "default" },
