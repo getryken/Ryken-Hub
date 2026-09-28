@@ -1,4 +1,4 @@
--- modified airflow ui
+-- modified airflow ui library
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 local GuiService = game:GetService("GuiService")
@@ -73,29 +73,23 @@ local function finishElement(tab, opts, element, frame, kind)
     return element
 end
 
--- ------------------------------------------------------------
--- THEME (Black & White)
--- ------------------------------------------------------------
 Library.Theme = {
     -- Black & White theme
-    Background   = Color3.fromRGB(8, 8, 8),      -- Near pure black
-    Surface      = Color3.fromRGB(14, 14, 14),    -- Slightly raised
-    Surface2     = Color3.fromRGB(20, 20, 20),    -- Cards / rows
-    Surface3     = Color3.fromRGB(28, 28, 28),    -- Inputs / tracks
-    Stroke       = Color3.fromRGB(40, 40, 40),    -- Borders
-    StrokeHover  = Color3.fromRGB(70, 70, 70),    -- Hover borders
-    Accent       = Color3.fromRGB(240, 240, 240), -- Primary white accent
-    AccentDark   = Color3.fromRGB(12, 12, 12),    -- Dark on accent
-    Text         = Color3.fromRGB(235, 235, 235), -- Main text
-    Muted        = Color3.fromRGB(130, 130, 130), -- Secondary text
-    Warning      = Color3.fromRGB(200, 200, 200), -- Grayscale warning
-    Success      = Color3.fromRGB(180, 180, 180), -- Grayscale success
-    Error        = Color3.fromRGB(160, 160, 160), -- Grayscale error
+    Background   = Color3.fromRGB(8, 8, 8),
+    Surface      = Color3.fromRGB(14, 14, 14),
+    Surface2     = Color3.fromRGB(20, 20, 20),
+    Surface3     = Color3.fromRGB(28, 28, 28),
+    Stroke       = Color3.fromRGB(40, 40, 40),
+    StrokeHover  = Color3.fromRGB(70, 70, 70),
+    Accent       = Color3.fromRGB(240, 240, 240),
+    AccentDark   = Color3.fromRGB(12, 12, 12),
+    Text         = Color3.fromRGB(235, 235, 235),
+    Muted        = Color3.fromRGB(130, 130, 130),
+    Warning      = Color3.fromRGB(200, 200, 200),
+    Success      = Color3.fromRGB(180, 180, 180),
+    Error        = Color3.fromRGB(160, 160, 160),
 }
 
--- ------------------------------------------------------------
--- ASSETS
--- ------------------------------------------------------------
 Library.Assets = {
     Shadow = "rbxassetid://6014261993",
     Glow = "rbxassetid://8992230677",
@@ -105,9 +99,6 @@ Library.Assets = {
 local LUCIDE_URL = "https://raw.githubusercontent.com/Footagesus/Icons/refs/heads/main/lucide/dist/Icons.lua"
 local lucideSet = nil
 
--- ------------------------------------------------------------
--- LUCIDE ICONS LOADER
--- ------------------------------------------------------------
 local function loadLucide()
     if lucideSet ~= nil then
         return lucideSet
@@ -140,9 +131,6 @@ local FONT_WEIGHTS = {
     Bold = { 700, Enum.FontWeight.Bold },
 }
 
--- ------------------------------------------------------------
--- CUSTOM FONTS
--- ------------------------------------------------------------
 function Library:LoadFont(opts)
     opts = normalize(opts, {})
     if type(writefile) ~= "function" or type(isfile) ~= "function" or typeof(getcustomasset) ~= "function" then
@@ -203,16 +191,10 @@ function Library:LoadFont(opts)
     return true
 end
 
--- ------------------------------------------------------------
--- PRELOAD
--- ------------------------------------------------------------
 function Library:PreloadIcons()
     return loadLucide() ~= false
 end
 
--- ------------------------------------------------------------
--- ICON HELPERS
--- ------------------------------------------------------------
 local function resolveIcon(icon)
     if typeof(icon) == "table" then
         return icon.Image, icon.RectOffset, icon.RectSize
@@ -246,9 +228,6 @@ end
 local BUTTON_HINT_ICON = "chevron-right"
 
 local FONT_FAMILY = "rbxasset://fonts/families/BuilderSans.json"
--- ------------------------------------------------------------
--- DEFAULT FONTS
--- ------------------------------------------------------------
 Library.Fonts = {
     Regular = Font.new(FONT_FAMILY, Enum.FontWeight.Regular),
     Medium = Font.new(FONT_FAMILY, Enum.FontWeight.Medium),
@@ -271,9 +250,6 @@ local CHIP_HEIGHT = TOUCH and 34 or 28
 
 local tweenInfoCache = {}
 
--- ------------------------------------------------------------
--- TWEEN HELPER
--- ------------------------------------------------------------
 local function tween(object, props, duration, style, direction)
     duration = duration or 0.2
     if duration <= 0 then
@@ -295,9 +271,6 @@ local function tween(object, props, duration, style, direction)
     return t
 end
 
--- ------------------------------------------------------------
--- INSTANCE CREATION HELPERS
--- ------------------------------------------------------------
 local function create(className, props, children)
     local inst = Instance.new(className)
     for key, value in pairs(props) do
@@ -689,9 +662,6 @@ function Tab:_nextOrder()
     return self._order
 end
 
--- ------------------------------------------------------------
--- ELEMENTS · Section
--- ------------------------------------------------------------
 function Tab:Section(text)
     if type(text) == "table" then
         text = text.Name or text.Title or ""
@@ -733,9 +703,6 @@ function Tab:Section(text)
     }, holder, "Section")
 end
 
--- ------------------------------------------------------------
--- ELEMENTS · Divider
--- ------------------------------------------------------------
 function Tab:Divider()
     local line = create("Frame", {
         Size = UDim2.new(1, 0, 0, 1),
@@ -747,9 +714,6 @@ function Tab:Divider()
     return finishElement(self, {}, {}, line, "Divider")
 end
 
--- ------------------------------------------------------------
--- ELEMENTS · Label
--- ------------------------------------------------------------
 function Tab:Label(opts)
     opts = normalize(opts, { Name = "Text", Title = "Text" })
     local text_ = label({
@@ -795,9 +759,6 @@ function Tab:Label(opts)
     return finishElement(self, opts, handle, text_, "Label")
 end
 
--- ------------------------------------------------------------
--- ELEMENTS · Paragraph
--- ------------------------------------------------------------
 function Tab:Paragraph(opts)
     opts = normalize(opts, { Title = "Name" })
     local frame = card(self, "Frame", 0, opts)
@@ -834,9 +795,6 @@ function Tab:Paragraph(opts)
     }, frame, "Paragraph")
 end
 
--- ------------------------------------------------------------
--- ELEMENTS · Button
--- ------------------------------------------------------------
 function Tab:Button(opts)
     opts = normalize(opts, { Title = "Name", Description = "Desc" })
     local primary = opts.Style == "Primary"
@@ -898,9 +856,6 @@ function Tab:Button(opts)
     }, button, "Button")
 end
 
--- ------------------------------------------------------------
--- ELEMENTS · Toggle
--- ------------------------------------------------------------
 function Tab:Toggle(opts)
     local button, buttonStroke
     opts, button, buttonStroke = beginElement(self, opts, { Title = "Name", Description = "Desc", CurrentValue = "Default", Value = "Default" }, "TextButton", 56, "Toggle")
@@ -991,9 +946,6 @@ function Tab:Toggle(opts)
     return handle
 end
 
--- ------------------------------------------------------------
--- ELEMENTS · Slider
--- ------------------------------------------------------------
 function Tab:Slider(opts)
     opts = normalize(opts, { Title = "Name", Description = "Desc", CurrentValue = "Default", Value = "Default", Increment = "Step" })
     local min = opts.Min or 0
@@ -1281,9 +1233,6 @@ function Tab:Slider(opts)
     return finishElement(self, opts, self_, frame, "Slider")
 end
 
--- ------------------------------------------------------------
--- ELEMENTS · Dropdown
--- ------------------------------------------------------------
 function Tab:Dropdown(opts)
     opts = normalize(opts, { Title = "Name", Description = "Desc", CurrentOption = "Default", Value = "Default", MultipleOptions = "Multi", Values = "Options" })
     if opts.Multi and type(opts.Default) ~= "table" and opts.Default ~= nil then
@@ -1686,9 +1635,6 @@ function Tab:Dropdown(opts)
     return finishElement(self, opts, self_, frame, "Dropdown")
 end
 
--- ------------------------------------------------------------
--- ELEMENTS · Input
--- ------------------------------------------------------------
 function Tab:Input(opts)
     local frame, frameStroke, _, titleLabel, descLabel
     opts, frame, frameStroke, _, titleLabel, descLabel = beginElement(self, opts, { Title = "Name", Description = "Desc", PlaceholderText = "Placeholder", CurrentValue = "Default", Value = "Default" }, "Frame", 160, "Input")
@@ -1786,9 +1732,6 @@ function Tab:Input(opts)
     }, frame, "Input")
 end
 
--- ------------------------------------------------------------
--- ELEMENTS · Keybind
--- ------------------------------------------------------------
 function Tab:Keybind(opts)
     local frame, frameStroke, _, titleLabel, descLabel
     opts, frame, frameStroke, _, titleLabel, descLabel = beginElement(self, opts, { Title = "Name", Description = "Desc", CurrentKeybind = "Default", Value = "Default" }, "Frame", 110, "Keybind")
@@ -1885,9 +1828,6 @@ function Tab:Keybind(opts)
     return finishElement(self, opts, self_, frame, "Keybind")
 end
 
--- ------------------------------------------------------------
--- ELEMENTS · ColorPicker
--- ------------------------------------------------------------
 function Tab:ColorPicker(opts)
     local PANEL_HEIGHT = 168
     local frame, frameStroke, height
@@ -2155,9 +2095,6 @@ function Tab:ColorPicker(opts)
     return finishElement(self, opts, self_, frame, "ColorPicker")
 end
 
--- ------------------------------------------------------------
--- ELEMENTS · Stepper
--- ------------------------------------------------------------
 function Tab:Stepper(opts)
     local frame, frameStroke, _, titleLabel, descLabel
     opts, frame, frameStroke, _, titleLabel, descLabel = beginElement(self, opts, { Title = "Name", Description = "Desc", CurrentValue = "Default", Value = "Default", Increment = "Step" }, "Frame", 150, "Stepper")
@@ -2298,9 +2235,6 @@ function Tab:Stepper(opts)
     return finishElement(self, opts, self_, frame, "Stepper")
 end
 
--- ------------------------------------------------------------
--- ELEMENTS · Progress
--- ------------------------------------------------------------
 function Tab:Progress(opts)
     opts = normalize(opts, { Title = "Name", Description = "Desc", CurrentValue = "Default", Value = "Default" })
     local frame, frameStroke = card(self, "Frame", opts.Desc and CARD_HEIGHT_DESC + 10 or CARD_HEIGHT + 10, opts)
@@ -2382,9 +2316,6 @@ function Tab:Progress(opts)
 end
 
 
--- ------------------------------------------------------------
--- ELEMENTS · Config Manager
--- ------------------------------------------------------------
 function Tab:ConfigManager(opts)
     opts = normalize(opts, {})
     local window = self.Window
@@ -2536,9 +2467,6 @@ local NOTIFY_COLORS = {
 local Window = {}
 Window.__index = Window
 
--- ------------------------------------------------------------
--- WINDOW CONSTRUCTOR
--- ------------------------------------------------------------
 function Library.Window(_, opts)
     opts = normalize(opts, { Name = "Title", LoadingSubtitle = "Subtitle", ToggleUIKeybind = "Keybind" })
 
@@ -4120,9 +4048,6 @@ function Window:_buildHome(opts)
     return tab
 end
 
--- ------------------------------------------------------------
--- TAB CREATION
--- ------------------------------------------------------------
 function Window:Tab(opts, icon)
     opts = normalize(opts, { Title = "Name", Description = "Desc" })
     if icon ~= nil and opts.Icon == nil then
@@ -4263,9 +4188,6 @@ end
 
 Window.CreateTab = Window.Tab
 
--- ------------------------------------------------------------
--- DIALOGS / CONFIRM
--- ------------------------------------------------------------
 function Window:Dialog(opts)
     opts = normalize(opts, { Text = "Content", Message = "Content" })
     if self._dialog then
@@ -4641,9 +4563,6 @@ function Window:SetKeybind(keyCode)
     self._keyChipLabel.Text = keyName(keyCode)
 end
 
--- ------------------------------------------------------------
--- NOTIFICATIONS
--- ------------------------------------------------------------
 function Window:Notify(opts)
     opts = normalize(opts, { Text = "Content", Message = "Content", Image = "Icon" })
     local duration = opts.Duration or 4
@@ -4807,9 +4726,6 @@ function Window:Notify(opts)
     return { Dismiss = dismiss }
 end
 
--- ------------------------------------------------------------
--- CLEANUP
--- ------------------------------------------------------------
 function Window:Destroy()
     if self._destroyed then
         return
@@ -4833,3 +4749,5 @@ function Window:Destroy()
         self.Gui:Destroy()
     end)
 end
+
+return Library
