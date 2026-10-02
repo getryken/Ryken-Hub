@@ -1,4 +1,4 @@
--- modified airflow ui library
+-- Crown Hub UI Library 
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 local GuiService = game:GetService("GuiService")
@@ -74,26 +74,26 @@ local function finishElement(tab, opts, element, frame, kind)
 end
 
 Library.Theme = {
-    -- Black & White theme
-    Background   = Color3.fromRGB(8, 8, 8),
-    Surface      = Color3.fromRGB(14, 14, 14),
-    Surface2     = Color3.fromRGB(20, 20, 20),
-    Surface3     = Color3.fromRGB(28, 28, 28),
-    Stroke       = Color3.fromRGB(40, 40, 40),
-    StrokeHover  = Color3.fromRGB(70, 70, 70),
-    Accent       = Color3.fromRGB(240, 240, 240),
-    AccentDark   = Color3.fromRGB(12, 12, 12),
-    Text         = Color3.fromRGB(235, 235, 235),
-    Muted        = Color3.fromRGB(130, 130, 130),
-    Warning      = Color3.fromRGB(200, 200, 200),
-    Success      = Color3.fromRGB(180, 180, 180),
-    Error        = Color3.fromRGB(160, 160, 160),
+    -- Crown Hub green theme
+    Background   = Color3.fromRGB(6, 14, 10),
+    Surface      = Color3.fromRGB(10, 22, 14),
+    Surface2     = Color3.fromRGB(14, 30, 18),
+    Surface3     = Color3.fromRGB(18, 40, 24),
+    Stroke       = Color3.fromRGB(30, 70, 42),
+    StrokeHover  = Color3.fromRGB(50, 120, 70),
+    Accent       = Color3.fromRGB(34, 197, 94),
+    AccentDark   = Color3.fromRGB(12, 40, 22),
+    Text         = Color3.fromRGB(236, 253, 245),
+    Muted        = Color3.fromRGB(110, 180, 140),
+    Warning      = Color3.fromRGB(250, 204, 21),
+    Success      = Color3.fromRGB(34, 197, 94),
+    Error        = Color3.fromRGB(239, 68, 68),
 }
 
 Library.Assets = {
     Shadow = "rbxassetid://6014261993",
     Glow = "rbxassetid://8992230677",
-    Logo = "rbxassetid://76507426303345",
+    Logo = "rbxassetid://87662873050747",
 }
 
 local LUCIDE_URL = "https://raw.githubusercontent.com/Footagesus/Icons/refs/heads/main/lucide/dist/Icons.lua"
@@ -111,7 +111,7 @@ local function loadLucide()
         lucideSet = result
     else
         lucideSet = false
-        warn("[AirFlow] lucide icons unavailable: " .. tostring(result))
+        warn("[CrownHub] lucide icons unavailable: " .. tostring(result))
     end
     return lucideSet
 end
@@ -134,16 +134,16 @@ local FONT_WEIGHTS = {
 function Library:LoadFont(opts)
     opts = normalize(opts, {})
     if type(writefile) ~= "function" or type(isfile) ~= "function" or typeof(getcustomasset) ~= "function" then
-        warn("[AirFlow] custom fonts need writefile, isfile and getcustomasset")
+        warn("[CrownHub] custom fonts need writefile, isfile and getcustomasset")
         return false
     end
     local name = opts.Name or "CustomFont"
     local weights = opts.Weights or FONT_PRESETS[name]
     if type(weights) ~= "table" then
-        warn("[AirFlow] no font weights for " .. name)
+        warn("[CrownHub] no font weights for " .. name)
         return false
     end
-    local folder = opts.Folder or "AirFlowFonts"
+    local folder = opts.Folder or "CrownHubFonts"
     pcall(function()
         if type(isfolder) == "function" and type(makefolder) == "function" and not isfolder(folder) then
             makefolder(folder)
@@ -163,7 +163,7 @@ function Library:LoadFont(opts)
             if ok then
                 table.insert(faces, { name = weightName, weight = info[1], style = "normal", assetId = getcustomasset(path) })
             else
-                warn("[AirFlow] could not download " .. weightName .. " weight of " .. name)
+                warn("[CrownHub] could not download " .. weightName .. " weight of " .. name)
             end
         end
     end
@@ -221,7 +221,7 @@ local function resolveIcon(icon)
     elseif type(entry) == "string" then
         return entry
     end
-    warn("[AirFlow] unknown lucide icon: " .. name)
+    warn("[CrownHub] unknown lucide icon: " .. name)
     return nil
 end
 
@@ -561,7 +561,7 @@ local function safeCall(callback, ...)
     end
     local ok, err = pcall(callback, ...)
     if not ok then
-        warn("[AirFlow] callback error: " .. tostring(err))
+        warn("[CrownHub] callback error: " .. tostring(err))
     end
 end
 
@@ -747,7 +747,7 @@ function Tab:Label(opts)
                 if ok and value ~= nil then
                     text_.Text = tostring(value)
                 elseif not ok then
-                    warn("[AirFlow] label update error: " .. tostring(value))
+                    warn("[CrownHub] label update error: " .. tostring(value))
                 end
                 task.wait(rate)
             end
@@ -2506,7 +2506,7 @@ function Library.Window(_, opts)
     table.insert(self._connections, UserInputService.InputEnded:Connect(dispatch("Ended")))
 
     local gui = create("ScreenGui", {
-        Name = opts.Name or "AirflowUI",
+        Name = opts.Name or "CrownHubUI",
         IgnoreGuiInset = true,
         ResetOnSpawn = false,
         DisplayOrder = 999,
@@ -2588,7 +2588,7 @@ function Library.Window(_, opts)
     label({
         Position = UDim2.fromOffset(60, 25),
         Size = UDim2.new(1, -70, 0, 20),
-        Text = opts.Title or "Airflow",
+        Text = opts.Title or "CrownHub",
         TextSize = 20,
         Parent = header,
     })
@@ -2777,11 +2777,11 @@ function Library.Window(_, opts)
 
     local saving = opts.ConfigurationSaving
     if type(saving) == "table" and saving.Enabled ~= false then
-        self.ConfigFolder = saving.FolderName or "AirflowUI"
+        self.ConfigFolder = saving.FolderName or "CrownHubUI"
         self.ConfigName = saving.FileName or "default"
         self._autoSaveEnabled = true
     else
-        self.ConfigFolder = "AirflowUI"
+        self.ConfigFolder = "CrownHubUI"
         self.ConfigName = "default"
         self._autoSaveEnabled = false
     end
@@ -3096,7 +3096,7 @@ function Window:_showLoader(opts)
     label({
         Position = UDim2.fromOffset(78, 30),
         Size = UDim2.new(1, -100, 0, 22),
-        Text = opts.LoadingTitle or opts.Title or "Airflow",
+        Text = opts.LoadingTitle or opts.Title or "CrownHub",
         TextSize = 20,
         Parent = loader,
     })
@@ -3267,7 +3267,7 @@ function Window:_createOpenButton(opts)
         Position = UDim2.fromOffset(28, 0),
         Size = UDim2.new(0, 0, 1, 0),
         AutomaticSize = Enum.AutomaticSize.X,
-        Text = opts.Title or "Airflow",
+        Text = opts.Title or "CrownHub",
         TextSize = 13,
         TextTruncate = Enum.TextTruncate.None,
         ZIndex = 31,
